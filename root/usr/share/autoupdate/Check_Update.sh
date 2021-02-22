@@ -7,8 +7,8 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 	echo "未检测到 /bin/AutoUpdate.sh" > /tmp/cloud_version
 	exit
 fi
-CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 Source="$(awk 'NR==5' /etc/openwrt_info)"
+CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 [[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
