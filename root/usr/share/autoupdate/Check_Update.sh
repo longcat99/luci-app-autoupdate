@@ -8,6 +8,7 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 	exit
 fi
 CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
+Source="$(awk 'NR==5' /etc/openwrt_info)"
 [[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
@@ -30,7 +31,7 @@ x86_64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "AutoBuild-${CURRENT_DEVICE}-R[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o 'R[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
+Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Source}-${CURRENT_DEVICE}-R[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o 'R[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
 	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
