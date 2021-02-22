@@ -17,7 +17,7 @@ Github_Tags="https://api.github.com/repos/${Author}/releases/latest"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
 case ${CURRENT_DEVICE} in
-x86_64)
+x86-64)
 	if [ -d /sys/firmware/efi ];then
 		Firmware_SFX="-UEFI.${Firmware_Type}"
 		BOOT_Type="-UEFI"
