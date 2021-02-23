@@ -13,7 +13,7 @@ CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
 Author="${Github##*com/}"
-Github_Tags="https://api.github.com/repos/${Author}/releases/tags/AutoUpdate"
+Github_Tags="https://api.github.com/repos/${Author}/releases/tags/update_Firmware"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
 case ${CURRENT_DEVICE} in
