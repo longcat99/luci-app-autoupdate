@@ -13,7 +13,7 @@ CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
 Author="${Github##*com/}"
-Github_Tags="https://api.github.com/repos/${Author}/releases/latest"
+Github_Tags="https://api.github.com/repos/${Author}/releases/tags/AutoUpdate"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
 case ${CURRENT_DEVICE} in
@@ -31,7 +31,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Source}-${CURRENT_DEVICE}-R[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o 'R[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
+Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Source}-${CURRENT_DEVICE}-[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
 	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
