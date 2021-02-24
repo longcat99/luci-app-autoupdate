@@ -31,7 +31,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Source}-${CURRENT_DEVICE}-[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
+Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "openwrt-[0-9]+.[0-9]+.[0-9]+.[0-9]+.[a-z]+.[a-z]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+.[a-z]+.[a-z]+')"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
 	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
