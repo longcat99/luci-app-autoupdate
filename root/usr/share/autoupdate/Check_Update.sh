@@ -9,15 +9,15 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 fi
 CURRENT_COMP1="$(awk 'NR==5' /etc/openwrt_info)"
 CURRENT_COMP2="$(awk 'NR==6' /etc/openwrt_info)"
-CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
-[[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
+CURRENT_Device="$(awk 'NR==3' /etc/openwrt_info)"
+[[ -z "${CURRENT_Device}" ]] && CURRENT_Device="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
 Author="${Github##*com/}"
 Github_Tags="https://api.github.com/repos/${Author}/releases/tags/update_Firmware"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
-case ${CURRENT_DEVICE} in
+case ${CURRENT_Device} in
 x86-64)
 	if [ -d /sys/firmware/efi ];then
 		Firmware_SFX="-UEFI.${Firmware_Type}"
@@ -32,7 +32,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-GET_FullVersion="$(cat /tmp/Github_Tags | egrep -o "${CURRENT_COMP1}-${CURRENT_COMP2}-${CURRENT_DEVICE}-[0-9]+.[0-9]+.[0-9]+.[0-9]+" | awk 'END {print}')"
+GET_FullVersion="$(cat /tmp/Github_Tags | egrep -o "${CURRENT_COMP1}-${CURRENT_COMP2}-${CURRENT_Device}-[0-9]+.[0-9]+.[0-9]+.[0-9]+" | awk 'END {print}')"
 GET_Ver="${GET_FullVersion#*${CURRENT_COMP1}-}"
 Cloud_Version="${GET_Ver}"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
