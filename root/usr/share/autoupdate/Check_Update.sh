@@ -32,7 +32,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-GET_FullVersion="$(cat /tmp/Github_Tags | egrep -o "${CURRENT_COMP1}-${CURRENT_COMP2}-${CURRENT_Device}-[0-9]+.[0-9]+.[0-9]+.[0-9]+" | awk 'END {print}')"
+GET_FullVersion="$(cat /tmp/Github_Tags | egrep -o "${CURRENT_COMP1}-${CURRENT_COMP2}-${CURRENT_DEVICE}-[0-9]+.[0-9]+.[0-9]+.[0-9]+" | awk 'END {print}')"
 GET_Ver="${GET_FullVersion#*${CURRENT_COMP1}-}"
 Cloud_Version="${GET_Ver}"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
