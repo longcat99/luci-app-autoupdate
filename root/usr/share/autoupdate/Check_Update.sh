@@ -7,7 +7,8 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 	echo "未检测到 /bin/AutoUpdate.sh" > /tmp/cloud_version
 	exit
 fi
-Source="$(awk 'NR==5' /etc/openwrt_info)"
+CURRENT_COMP1="$(awk 'NR==5' /etc/openwrt_info)"
+CURRENT_COMP2="$(awk 'NR==6' /etc/openwrt_info)"
 CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 [[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
@@ -31,7 +32,9 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "openwrt-[0-9]+.[0-9]+.[0-9]+.[0-9]+.[a-z]+.[a-z]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[0-9]+.[0-9]+.[0-9]+.[0-9]+.[a-z]+.[a-z]+')"
+GET_FullVersion=$(cat /tmp/beta_Tags | egrep -o "${CURRENT_COMP1}-${CURRENT_COMP2}-${CURRENT_Device}-[0-9]+.[0-9]+.[0-9]+.[0-9]+.[a-z]+.[a-z]+" | awk 'END {print}')
+GET_Ver="${GET_FullVersion#*${CURRENT_COMP1}-}"
+Cloud_Version="${GET_Ver}"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
 	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
