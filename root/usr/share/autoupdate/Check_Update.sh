@@ -9,7 +9,6 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 fi
 CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 Firmware_opmz="$(awk 'NR==5' /etc/openwrt_info)"
-Firmware_zuozhe="$(awk 'NR==6' /etc/openwrt_info)"
 [[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
@@ -32,7 +31,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Firmware_opmz}-${Firmware_zuozhe}-[a-z]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[a-z]+.[0-9]+.[0-9]+.[0-9]+')"
+Cloud_Version="$(cat /tmp/Github_Tags | egrep -o "${Firmware_opmz}-[a-z]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[a-z]+.[0-9]+.[0-9]+.[0-9]+')"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
 	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
@@ -40,7 +39,7 @@ if [[ ! -z "${Cloud_Version}" ]];then
 	else
 		Checked_Type="可更新"
 	fi
-	echo "${Firmware_zuozhe}-${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
+	echo "${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
 else
 	echo "未知" > /tmp/cloud_version
 fi
