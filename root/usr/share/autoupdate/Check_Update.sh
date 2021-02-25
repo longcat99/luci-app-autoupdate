@@ -7,13 +7,14 @@ if [ ! -f /bin/AutoUpdate.sh ];then
 	echo "未检测到 /bin/AutoUpdate.sh" > /tmp/cloud_version
 	exit
 fi
+CURRENT_DEVICE="$(awk 'NR==3' /etc/openwrt_info)"
 Firmware_opmz="$(awk 'NR==5' /etc/openwrt_info)"
 Firmware_zuozhe="$(awk 'NR==6' /etc/openwrt_info)"
 [[ -z "${CURRENT_DEVICE}" ]] && CURRENT_DEVICE="$(jsonfilter -e '@.model.id' < "/etc/board.json" | tr ',' '_')"
 Github="$(awk 'NR==2' /etc/openwrt_info)"
 [[ -z "${Github}" ]] && exit
 Author="${Github##*com/}"
-Github_Tags="https://api.github.com/repos/${Author}/releases/latest"
+Github_Tags="https://api.github.com/repos/${Author}/releases/tags/update_Firmware"
 wget -q ${Github_Tags} -O - > /tmp/Github_Tags
 Firmware_Type="$(awk 'NR==4' /etc/openwrt_info)"
 case ${CURRENT_DEVICE} in
