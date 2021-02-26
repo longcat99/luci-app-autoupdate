@@ -31,7 +31,7 @@ x86-64)
 	BOOT_Type=""
 ;;
 esac
-Cloud_Ver="$(cat /tmp/Github_Tags | egrep -o "${Firmware_opmz}-[a-z]+.[a-z]+.[a-z]+.[a-z]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[a-z]+.[a-z]+.[a-z]+.[a-z]+.[0-9]+.[0-9]+.[0-9]+.[0-9]+')"
+Cloud_Ver="$(cat /tmp/Github_Tags | egrep -o "${Firmware_opmz}-[a-zA-Z0-9_-]+.[0-9]+.[0-9]+.[0-9]+${Firmware_SFX}" | awk 'END {print}' | egrep -o '[a-zA-Z0-9_-]+.[0-9]+.[0-9]+.[0-9]+')"
 Cloud_Version="${Cloud_Ver#*${Firmware_opmz}-}"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
