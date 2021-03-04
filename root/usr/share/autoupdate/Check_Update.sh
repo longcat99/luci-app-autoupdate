@@ -43,6 +43,6 @@ if [[ ! -z "${Cloud_Version}" ]];then
 	fi
 	echo "${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
 else
-	echo "未知" > /tmp/cloud_version
+	echo "当前网络不佳或云端固件已删除" > /tmp/cloud_version
 fi
 exit
