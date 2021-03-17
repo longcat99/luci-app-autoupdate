@@ -36,13 +36,16 @@ Cloud_Ver="$(cat /tmp/Github_Tags | egrep -o "${Firmware_COMP1}-${Firmware_COMP2
 Cloud_Version="${Cloud_Ver#*${Firmware_COMP1}-}"
 CURRENT_Version="$(awk 'NR==1' /etc/openwrt_info)"
 if [[ ! -z "${Cloud_Version}" ]];then
-	if [[ "${CURRENT_Version}" == "${Cloud_Version}" ]];then
+	if [[ "${CURRENT_Version}" -eq "${Cloud_Version}" ]];then
 		Checked_Type="已是最新"
-	else
-		Checked_Type="可更新"
+		echo "${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
+	elif [[ "${CURRENT_Version}" -gt "${Cloud_Version}" ]];then
+		Checked_Type="发现更新"
+		echo "${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
+	elif [[ "${CURRENT_Version}" -lt "${Cloud_Version}" ]];then
+		echo "您当前的版本高于云端现有版本" > /tmp/cloud_version		
 	fi
-	echo "${Cloud_Version}${BOOT_Type} [${Checked_Type}]" > /tmp/cloud_version
 else
-	echo "当前网络不佳或云端固件已删除或者您使用的是私人仓库" > /tmp/cloud_version
+	echo "当前网络不佳,请检查网络或者再次刷新网页  、或者云端固件已删除,请检查云端地址的固件是否已删除  、或者您使用的是私人仓库,云端地址不能访问,检测不到云端固件" > /tmp/cloud_version
 fi
 exit
