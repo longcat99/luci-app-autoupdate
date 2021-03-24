@@ -41,7 +41,7 @@ local current_model = luci.sys.exec("jsonfilter -e '@.model.id' < /etc/board.jso
 local firmware_type = luci.sys.exec("cat /etc/openwrt_info | awk 'NR==4'")
 
 button_upgrade_firmware = s:option (Button, "_button_upgrade_firmware", translate("Upgrade to Latested Version"),
-translatef("点击上方 执行更新 后请耐心等待至路由器重启.") .. "<br><br>当前固件版本: " .. current_version .. "<br>云端固件版本: " .. cloud_version.. "<br>固件类型: " .. firmware_type)
+translatef("点击上方 手动更新 后请耐心等待至路由器重启.") .. "<br><br>当前固件版本: " .. current_version .. "<br>云端固件版本: " .. cloud_version.. "<br><br>设备名称: " .. current_model .. "<br>固件类型: " .. firmware_type)
 button_upgrade_firmware.inputtitle = translate ("Do Upgrade")
 button_upgrade_firmware.write = function()
 	luci.sys.call ("bash /bin/AutoUpdate.sh -u > /dev/null")
